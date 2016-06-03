@@ -1,0 +1,65 @@
+<html>
+	<head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        </head>
+    <body>
+	<nav class="navbar navbar-default">
+  	<div class="container-fluid">
+	<div class="navbar-header">
+	<a class="navbar-brand" href"#">Catalog!</a>
+	<a class="navbar-right btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+	</div>
+	</div>
+	</nav>
+	<div class="container-fluid">
+
+	{% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+        <ul>
+        {% for message in messages %}
+            <li><strong>{{message}}</strong></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+	<div class="container">
+	<div class="col-md-6">
+	<h2>Categories</h2>
+	<ul class="list-unstyled">	
+        {% for i in category%}
+
+        <li><a class='btn btn-default' href={{url_for('categoryItems',category_name = i.name)}}>{{i.name}}</a></li>
+        <a href={{url_for('editCategory',category_name = i.name)}}>Edit</a>
+        <a href={{url_for('deleteCategory',category_name = i.name)}}>Delete</a>
+        
+        {% endfor %}
+
+	</ul>
+	</div>
+
+	<div class="col-md-6">
+	<h2>Recently Added Items</h2>
+	<ul class="list-unstyled">	
+        {% for i in items %}
+
+        <li><a class='btn btn-default' {#href={{url_for('categoryItems',category_name = i.name)}}#}>{{i.name}} ({{ i.category.name }})</a></li>
+        
+        </br>
+
+        {% endfor %}
+
+	</ul>
+
+	</div>
+	</div>
+	</div>
+	<script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
+
+        <script type=text/javascript src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+    </body>
+
+</html>

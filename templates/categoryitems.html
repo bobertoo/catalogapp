@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    </head>
+    <body>
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href"#">Catalog!</a>
+        <a class="navbar-right btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+        </div>
+        </div>
+        </nav>
+        <div class="container-fluid">
+        <h1>{{ category.name }}</h1>
+
+        <a class="btn btn-default" href={{url_for('newCategoryItem', category_name = category.name)}}>Create a new item!</a>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+        <ul>
+        {% for message in messages %}
+            <li><strong>{{message}}</strong></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% for i in items %}
+
+        <h2>Item Name: {{i.name}}</h2>
+        <p>Description: {{i.description}}</p>
+
+        <a href={{url_for('editCategoryItem', category_name = category.name, item_id = i.id)}}>Edit</a>
+
+        <a href={{url_for('deleteCategoryItem', category_name = category.name, item_id = i.id)}}>Delete</a>
+
+        </br>
+        </br>
+        {% endfor %}
+
+        <a href={{url_for('categories')}}>Show all categories!</a>
+</div>
+
+	<script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
+
+	<script type=text/javascript src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+    </body>
+
+</html>
