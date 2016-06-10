@@ -83,25 +83,39 @@ def deleteCategory(category_name):
 
 @app.route('/<category_name>')
 def categoryItems(category_name):
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
     items = session.query(CategoryItem).filter_by(category_id=category.id).all()
-    return render_template('categoryitems.html', category = category, items = items)
+    return render_template('categoryitems.html',categories = categories, category = category, items = items)
 
 #Individual item page
 
-# Task 1: Create route for new Item function here
+@app.route('/<category_name>/<int:item_id>/')
+def singleItem(category_name, item_id):
+    categories = session.query(Category).all()
+    category = session.query(Category).filter_by(name=category_name).one()
+    items = session.query(CategoryItem).filter_by(category_id=category.id).all()
+    singleItem = session.query(CategoryItem).filter_by(id=item_id).one()
+    return render_template('singleitem.html', category_name = category_name, item_id = item_id, i = singleItem, categories = categories, category = category, items = items)
 
-@app.route('/<category_name>/new/', methods=['GET','POST'])
-def newCategoryItem(category_name):
+# Task 1: Create route for new Item function here
+@app.route('/newitem/', methods=['GET','POST'])
+def newCategoryItem():
     if request.method == 'POST':
-    	category = session.query(Category).filter_by(name=category_name).one()
+    	category = session.query(Category).filter_by(name=request.form['categoryname']).one()
         newItem = CategoryItem(name = request.form['name'], category_id = category.id)
+	if request.form['description']:
+		newItem.description = request.form['description']
+	else:
+		newItem.description = 'no description added yet'
         session.add(newItem)
         session.commit()
         flash("new item created!")
-        return redirect(url_for('categoryItems', category_name = category_name))
+        return redirect(url_for('categories'))
     else:
-        return render_template('newcategoryitem.html', category_name = category_name)
+    	categories = session.query(Category).all()
+        return render_template('newitem.html', categories = categories)
+
 # Task 2: Create route for editMenuItem function here
 
 @app.route('/<category_name>/<int:item_id>/edit/', methods=['GET','POST'])

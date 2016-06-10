@@ -1,22 +1,22 @@
 <html>
-    <head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+	<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    </head>
+	</head>
     <body>
-<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default">
         <div class="container-fluid">
         <div class="navbar-header">
-        <a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
+	<a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
         <a class="btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
-        <a class=" btn btn-default navbar-btn" href={{url_for('newCategoryItem', category_name = category.name)}}>Create a new item!</a>
+<a class=" btn btn-default navbar-btn" href={{url_for('newCategoryItem', category_name = category.name)}}>Create a new item!</a>
         </div>
         </div>
         </nav>
-        <div class="container-fluid">
-        <div class="container">
-        <div class="col-md-4">
+	    <div class="container-fluid">
+	<div class="container">
+	<div class="col-md-4">
         <h2>Categories</h2>
         <ul class="list-unstyled">
         {% for i in categories%}
@@ -28,14 +28,13 @@
         {% endfor %}
 
         </ul>
-        </div>
-
-        <div class="col-md-4">
-        <h2>{{ category.name }}</h2>
+	</div>
+	<div class="col-md-4">
+	<h2>{{ category.name }}</h2>
         <ul class="list-unstyled">
         {% for i in items %}
 
-	<li><a class="btn btn-default" href={{url_for('singleItem', category_name = category.name, item_id = i.id)}}>{{i.name}}</a></li>
+        <li><a class="btn btn-default" href={{url_for('singleItem', category_name = category.name, item_id = i.id)}}>{{i.name}}</a></li>
 
         <a href={{url_for('editCategoryItem', category_name = category.name, item_id = i.id)}}>Edit</a>
 
@@ -43,25 +42,17 @@
 
         {% endfor %}
 </ul>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
+	</div>
+	<div class="col-md-4">
+	
+		    <h2>{{i.name}}</h2>
+		    <p>{{i.description}}</p>
 
-        <ul class="list-unstyled">
-        {% for message in messages %}
-            <li><strong>{{message}}</strong></li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-</div>
-        <div class="col-md-4">
 </div>
 </div>
 </div>
-
 	<script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
 
-	<script type=text/javascript src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
     </body>
-
 </html>

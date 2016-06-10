@@ -8,26 +8,16 @@
 	<nav class="navbar navbar-default">
   	<div class="container-fluid">
 	<div class="navbar-header">
-	<a class="navbar-brand" href"#">Catalog!</a>
-	<a class="navbar-right btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+	<a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
+	<a class="btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+<a class=" btn btn-default navbar-btn" href={{url_for('newCategoryItem')}}>Create a new item!</a>
 	</div>
 	</div>
 	</nav>
 	<div class="container-fluid">
 
-	{% with messages = get_flashed_messages() %}
-        {% if messages %}
-
-        <ul>
-        {% for message in messages %}
-            <li><strong>{{message}}</strong></li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-
 	<div class="container">
-	<div class="col-md-6">
+	<div class="col-md-4">
 	<h2>Categories</h2>
 	<ul class="list-unstyled">	
         {% for i in category%}
@@ -39,21 +29,33 @@
         {% endfor %}
 
 	</ul>
+
+	{% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+        <ul class="list-unstyled">
+        {% for message in messages %}
+            <li><strong>{{message}}</strong></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-md-4">
 	<h2>Recently Added Items</h2>
 	<ul class="list-unstyled">	
         {% for i in items %}
 
-        <li><a class='btn btn-default' {#href={{url_for('categoryItems',category_name = i.name)}}#}>{{i.name}} ({{ i.category.name }})</a></li>
+        <li><a class='btn btn-default recentlyAdded' href={{url_for('singleItem',category_name = i.category.name, item_id = i.id)}}>{{i.name}} ({{ i.category.name }})</a></li>
         
-        </br>
-
         {% endfor %}
 
 	</ul>
 
+	</div>
+	<div class="col-md-4">
 	</div>
 	</div>
 	</div>

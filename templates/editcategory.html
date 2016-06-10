@@ -5,17 +5,31 @@
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	</head>
     <body>
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
+        <a class="btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+<a class=" btn btn-default navbar-btn" href={{url_for('newCategoryItem')}}>Create a new item!</a>
+        </div>
+        </div>
+        </nav>
 	    <div class="container-fluid">
-        <h1>Edit Menu Item</h1>
+	    <div class="col-md-4">
+        <h1>Edit category name</h1>
 
         <form action={{ url_for('editCategory', category_name = category_name)}} method = 'post'>
 
             <p>Name:</p>
-	    <input type ='text' size='30' name='name' placeholder='{{category_name}}'>
-            <input type='submit' value='Edit'>
-            <a href={{url_for('categories')}}>Cancel</a>
+	    <input type ='text' size='30' name='name' class="form-control" placeholder='{{category_name}}'>
+	    <br>
+            <input class='btn btn-primary' type='submit' value='Edit'>
+            <a class="btn btn-danger" href={{url_for('categories')}}>Cancel</a>
 
         </form>
+</div>
+	    <div class="col-md-8">
+</div>
 </div>
 	<script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
 

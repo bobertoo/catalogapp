@@ -11,28 +11,29 @@
 <nav class="navbar navbar-default">
         <div class="container-fluid">
         <div class="navbar-header">
-	<a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
-        <a class="navbar-right btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+        <a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
+        <a class="btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
+<a class=" btn btn-default navbar-btn" href={{url_for('newCategoryItem')}}>Create a new item!</a>
         </div>
         </div>
         </nav>
         <div class="container-fluid">
 	<h1>New Item</h1>
 
-	<form action={{ url_for('newCategoryItem', category_name = category_name)}} method = 'post'>
+	<form action={{ url_for('newCategoryItem')}} method = 'post'>
 <div class="row">
 <div class="col-md-3">
 	<p>Name:</p>
-	<input type ='text' size='30' name='name' class="form-control">
+	<input type='text' size='30' name='name' class="form-control" placeholder='REQUIRED'>
+	<p>Description:</p>
+	<input type='text' size='30' name='description' class="form-control" placeholder='optional'>
 </div>
 <div class="col-md-3">
 	<p>Select a Category:</p>
-		<select class="form-control">
-			<option>1</option>
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-			<option>5</option>
+		<select type='text' name='categoryname' class="form-control">
+        	{% for i in categories %}
+			<option>{{i.name}}</option>
+		{% endfor %}
 		</select>
 </div>
 <div class="col-md-6">
