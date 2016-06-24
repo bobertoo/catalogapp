@@ -1,39 +1,25 @@
-<html>
-	<head>
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        </head>
-    <body>
-<nav class="navbar navbar-default">
-        <div class="container-fluid">
-        <div class="navbar-header">
-        <a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
-        <a class="navbar-right btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
-        </div>
-        </div>
-        </nav>
-        <div class="container-fluid">
-        <h1>Create a new category</h1>
+{% extends "main.html" %}
+{% block content %}
+{% include "nav.html" %}
 
-        <form action={{ url_for('newCategory', category_name = category_name)}} method = 'post'>
+<div class="container-fluid">
+	<h1>Create a new category</h1>
 
-            <p>Name:</p>
-	    <div class="row">
-		    <div class="col-md-3">
-            <input class="form-control" placeholder="Category name" type ='text' size='30' name='name'>
-    </div>
-		    <div class="col-md-9">
-		    </div>
-    </div>
-    <br>
-            <input class="btn btn-primary" type='submit' value='Create'>
-	<a class="btn btn-danger" href={{url_for('categories')}}>Cancel</a>
-        </form>
+	<form action={{ url_for('newCategory', category_name = category_name)}} method = 'post'>
+
+		<p>Name:</p>
+		<div class="row">
+			<div class="col-md-3">
+				<input class="form-control" placeholder="Category name" type ='text' size='30' name='name'>
+			</div>
+			<div class="col-md-9">
+			</div>
+		</div>
+		<br>
+		<input class="btn btn-primary" type='submit' value='Create'>
+		<a class="btn btn-danger" href={{url_for('categories')}}>Cancel</a>
+	</form>
 
 </div>
-	<script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
 
-        <script type=text/javascript src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
-    </body>
-</html>
+{% endblock %}

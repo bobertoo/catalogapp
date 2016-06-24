@@ -1,30 +1,18 @@
-<html>
-	<head>
-		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-	</head>
-    <body>
-<nav class="navbar navbar-default">
-        <div class="container-fluid">
-        <div class="navbar-header">
-        <a class="navbar-brand" href="{{url_for('categories')}}">Catalog!</a>
-        <a class="btn btn-default navbar-btn" href={{url_for('newCategory')}}>Create a new category!</a>
-<a class=" btn btn-default navbar-btn" href={{url_for('newCategoryItem')}}>Create a new item!</a>
-        </div>
-        </div>
-        </nav>
-	<div class="container-fluid">
-        <h1>Delete Menu Item</h1>
+{% extends "main.html" %}
+{% block content %}
+{% include "nav.html" %}
 
-        <form action={{ url_for('deleteCategoryItem', category_name = category_name, item_id = item_id)}} method = 'post'>
+<div class="container-fluid">
+	<h1>Delete Menu Item</h1>
 
-            <p>Would you like to delete {{i.name}}?</p>
-            <input class="btn btn-warning" type='submit' value='Delete'>
-            <a class="btn btn-danger" href={{url_for('categoryItems', category_name = category_name)}}>Cancel</a>
+	<form action={{ url_for('deleteCategoryItem', category_name = category_name, item_id = item_id)}} method = 'post'>
 
-        </form>
+		<p>Would you like to delete {{i.name}}?</p>
+		<input class="btn btn-warning" type='submit' value='Delete'>
+		<a class="btn btn-danger" href={{url_for('categoryItems', category_name = category_name)}}>Cancel</a>
+
+	</form>
 
 </div>
-    </body>
-</html>
+
+{% endblock %}
