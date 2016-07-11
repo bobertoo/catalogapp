@@ -246,8 +246,8 @@ def deleteCategory(category_name):
     if request.method == 'POST':
         items = session.query(
             CategoryItem).filter_by(category_id=category.id).all()
-    for i in items:
-        session.delete(i)
+        for i in items:
+            session.delete(i)
         session.delete(category)
         session.commit()
         flash("category deleted!")
