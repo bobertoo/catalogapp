@@ -1,8 +1,12 @@
+#import flask assets
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-## import CRUD Operations
+
+# import CRUD Operations
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, CategoryItem
+
+#import oauth stuff
 from flask import session as login_session
 import random
 from oauth2client.client import flow_from_clientsecrets
@@ -26,15 +30,29 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
+#API Endpoints
+@app.route('/<category_name>/JSON')
+def allItemsJSON(category_name):
+    category = session.query(Category).filter_by(name=category_name).one()
+    items = session.query(CategoryItem).filter_by(category_id=category.id).all()
+    return jsonify(CatalogItems=[i.serialize for i in items])
+
+@app.route('/<category_name>/<int:item_id>/JSON/')
+def restaurantMenuItemJSON(category_name, item_id):
+    singleItem = session.query(CategoryItem).filter_by(id=item_id).one()
+    return jsonify(singleItem=singleItem.serialize)
 
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+    if 'username' in login_session:
+        return redirect('/gdisconnect')
+    else:
+        state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                 for x in xrange(32))
-    login_session['state'] = state
-    # return "The current session state is %s" % login_session['state']
-    return render_template('login.html', STATE=state)
+        login_session['state'] = state
+        # return "The current session state is %s" % login_session['state']
+        return render_template('login.html', STATE=state)
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -138,8 +156,7 @@ def gdisconnect():
     print 'result is '
     print result
     if result['status'] == '200':
-	del login_session['access_token']
-    	del login_session['gplus_id']
+        del login_session['access_token']
     	del login_session['username']
     	del login_session['email']
     	del login_session['picture']
@@ -152,21 +169,15 @@ def gdisconnect():
     	response.headers['Content-Type'] = 'application/json'
     	return response
 
-#Making an API Endpoint (GET Request)
-@app.route('/categories/<int:category_id>/menu/JSON')
-def restaurantMenuJSON(restaurant_id):
-    items = session.query(MenuItem).filter_by(restaurant_id=restaurant_id).all()
-    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-    return jsonify(MenuItems=[i.serialize for i in items])
-
-@app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON/')
-def restaurantMenuItemJSON(restaurant_id, menu_id):
-    singleMenuItem = session.query(MenuItem).filter_by(id=menu_id).one()
-    return jsonify(singleMenuItem=singleMenuItem.serialize)
+# Disconnect based on provider
+@app.route('/disconnect')
+def disconnect():
+        gdisconnect()
+        flash("You have successfully been logged out.")
+        return redirect(url_for('categories'))
 
 #Landing Page
 #Show all categories
-
 @app.route('/')
 def categories():
     categories = session.query(Category).all()
@@ -174,7 +185,6 @@ def categories():
     return render_template('categories.html', category=categories, items = items)
 
 #Create new category
-
 @app.route('/new/', methods=['GET','POST'])
 def newCategory():
     if 'username' not in login_session:
@@ -189,7 +199,6 @@ def newCategory():
         return render_template('newcategory.html')
 
 #Edit Category
-
 @app.route('/<category_name>/edit/', methods=['GET','POST'])
 def editCategory(category_name):
     if 'username' not in login_session:
@@ -207,7 +216,6 @@ def editCategory(category_name):
 
 
 #Delete category
-
 @app.route('/<category_name>/delete/', methods=['GET','POST'])
 def deleteCategory(category_name):
     if 'username' not in login_session:
@@ -225,7 +233,6 @@ def deleteCategory(category_name):
         return render_template('deletecategory.html', category_name = category_name)
 
 #Individual category page
-
 @app.route('/<category_name>')
 def categoryItems(category_name):
     categories = session.query(Category).all()
@@ -234,7 +241,6 @@ def categoryItems(category_name):
     return render_template('categoryitems.html',categories = categories, category = category, items = items)
 
 #Individual item page
-
 @app.route('/<category_name>/<int:item_id>/')
 def singleItem(category_name, item_id):
     categories = session.query(Category).all()
@@ -243,7 +249,7 @@ def singleItem(category_name, item_id):
     singleItem = session.query(CategoryItem).filter_by(id=item_id).one()
     return render_template('singleitem.html', category_name = category_name, item_id = item_id, i = singleItem, categories = categories, category = category, items = items)
 
-# Task 1: Create route for new Item function here
+#Create new item
 @app.route('/newitem/', methods=['GET','POST'])
 def newCategoryItem():
     if 'username' not in login_session:
@@ -251,10 +257,10 @@ def newCategoryItem():
     if request.method == 'POST':
     	category = session.query(Category).filter_by(name=request.form['categoryname']).one()
         newItem = CategoryItem(name = request.form['name'], category_id = category.id)
-	if request.form['description']:
-		newItem.description = request.form['description']
-	else:
-		newItem.description = 'no description added yet'
+        if request.form['description']:
+            newItem.description = request.form['description']
+        else:
+    		newItem.description = 'no description added yet'
         session.add(newItem)
         session.commit()
         flash("new item created!")
@@ -263,8 +269,7 @@ def newCategoryItem():
     	categories = session.query(Category).all()
         return render_template('newitem.html', categories = categories)
 
-# Task 2: Create route for editMenuItem function here
-
+#Edit item
 @app.route('/<category_name>/<int:item_id>/edit/', methods=['GET','POST'])
 def editCategoryItem(category_name, item_id):
     if 'username' not in login_session:
@@ -282,8 +287,7 @@ def editCategoryItem(category_name, item_id):
     else:
         return render_template('editcategoryitem.html', category_name = category_name, item_id = item_id, i = editedItem)
 
-# Task 3: Create a route for deleteMenuItem function here
-
+#Delete item
 @app.route('/<category_name>/<int:item_id>/delete/', methods=['GET','POST'])
 def deleteCategoryItem(category_name, item_id):
     if 'username' not in login_session:
@@ -296,9 +300,6 @@ def deleteCategoryItem(category_name, item_id):
         return redirect(url_for('categoryItems', category_name = category_name))
     else:
         return render_template('deletecategoryitem.html', category_name = category_name, item_id = item_id, i = itemToDelete)
-
-# Task 4: Create a new restaurant here
-
 
 #Using flask to route site
 if __name__ == '__main__':
