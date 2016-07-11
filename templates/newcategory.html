@@ -1,25 +1,20 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "nav.html" %}
-
 <div class="container-fluid">
-	<h1>Create a new category</h1>
-
-	<form action={{ url_for('newCategory', category_name = category_name)}} method = 'post'>
-
-		<p>Name:</p>
-		<div class="row">
-			<div class="col-md-3">
-				<input class="form-control" placeholder="Category name" type ='text' size='30' name='name'>
-			</div>
-			<div class="col-md-9">
-			</div>
-		</div>
-		<br>
-		<input class="btn btn-primary" type='submit' value='Create'>
-		<a class="btn btn-danger" href={{url_for('categories')}}>Cancel</a>
-	</form>
-
+   <h1>Create a new category</h1>
+   <form action={{ url_for('newCategory', category_name = category_name)}} method = 'post'>
+   <p>Name:</p>
+   <div class="row">
+      <div class="col-md-3">
+         <input class="form-control" placeholder="Category name" type ='text' size='30' name='name'>
+      </div>
+      <div class="col-md-9">
+      </div>
+   </div>
+   <br>
+   <input class="btn btn-primary" type='submit' value='Create'>
+   <a class="btn btn-danger" href={{url_for('categories')}}>Cancel</a>
+   </form>
 </div>
-
 {% endblock %}

@@ -10,35 +10,32 @@ Base = declarative_base()
 
 class Category(Base):
 
-
     __tablename__ = 'category'
 
-    id = Column(Integer, primary_key = True)
-    name = Column(String(80), nullable = False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), nullable=False)
 
 
 class CategoryItem(Base):
 
-
     __tablename__ = 'category_item'
 
-    name = Column(String(80), nullable = False)
-    id = Column(Integer, primary_key = True)
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
     description = Column(String(250))
     category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship(Category)
 
     @property
     def serialize(self):
-        #Returns object data in easily serializeable format
+        # Returns object data in easily serializeable format
         return {
-                'description' : self.description,
-                'name' : self.name,
-                'item_id' : self.id,
-                'category' : self.category.name,
-                'category_id' : self.category.id,
+                'description': self.description,
+                'name': self.name,
+                'item_id': self.id,
+                'category': self.category.name,
+                'category_id': self.category.id,
                 }
-
 
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.create_all(engine)

@@ -1,17 +1,12 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "nav.html" %}
-
 <div class='container-fluid'>
-	<h1>Delete Category</h1>
-
-	<form action={{ url_for('deleteCategory', category_name = category_name)}} method = 'post'>
-
-		<p>Would you like to delete {{category_name}}?</p>
-		<input class='btn btn-warning' type='submit' value='Delete'>
-		<a class='btn btn-danger' href={{url_for('categories')}}>Cancel</a>
-
-	</form>
+   <h1>Delete Category</h1>
+   <form action={{ url_for('deleteCategory', category_name = category_name)}} method = 'post'>
+   <p>Would you like to delete {{category_name}}?</p>
+   <input class='btn btn-warning' type='submit' value='Delete'>
+   <a class='btn btn-danger' href={{url_for('categories')}}>Cancel</a>
+   </form>
 </div>
-
 {% endblock %}
