@@ -31,6 +31,12 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 #API Endpoints
+@app.route('/catalog.json')
+def JSON():
+    items = session.query(CategoryItem).all()
+    return jsonify(items=[i.serialize for i in items])
+
+
 @app.route('/<category_name>/JSON')
 def allItemsJSON(category_name):
     category = session.query(Category).filter_by(name=category_name).one()

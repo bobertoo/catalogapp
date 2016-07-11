@@ -9,7 +9,7 @@
       <ul class="list-unstyled">
         {% for i in categories%}
 
-        <li><a class='btn btn-default' href={{url_for('categoryItems',category_name = i.name)}}>{{i.name}}</a></li>
+        <li><a class='btn btn-default buttonz' href={{url_for('categoryItems',category_name = i.name)}}>{{i.name}}</a></li>
       	{%if 'username' in session %}
 				<a href={{url_for('editCategory',category_name = i.name)}}>Edit</a>
 				<a href={{url_for('deleteCategory',category_name = i.name)}}>Delete</a>

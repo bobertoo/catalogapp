@@ -32,12 +32,13 @@ class CategoryItem(Base):
     def serialize(self):
         #Returns object data in easily serializeable format
         return {
-                'name' : self.name,
                 'description' : self.description,
-                'id' : self.id,
+                'name' : self.name,
+                'item_id' : self.id,
+                'category' : self.category.name,
+                'category_id' : self.category.id,
                 }
 
 
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.create_all(engine)
-
